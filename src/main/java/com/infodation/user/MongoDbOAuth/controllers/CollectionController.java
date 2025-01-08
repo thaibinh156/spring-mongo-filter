@@ -53,10 +53,23 @@ public class CollectionController {
     }
 
     @PostMapping("/create-collection")
-    public ResponseEntity<String> createCollection(@RequestBody Document body) {
-        if (collectionService.isCollectionExisted(body.get("collectionName").toString()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(body.get("collectionName").toString() + " is existed");
-        return ResponseEntity.status(HttpStatus.OK).body("message: " + collectionService.createCollection(body.get("collectionName").toString()));
+    public ResponseEntity<Document> createCollection(@RequestBody Document body) {
+        Document response;
+        HttpStatus status;
+        String collectionName = body.get("collectionName").toString();
+
+        if (collectionName == null || collectionName.isEmpty()) {
+            response = new Document("message", "collectionName is required");
+            status = HttpStatus.BAD_REQUEST;
+        } else if (collectionService.isCollectionExisted(collectionName)) {
+            response = new Document("message", collectionName + " is existed");
+            status = HttpStatus.CONFLICT;
+        } else {
+            response = collectionService.createCollection(collectionName);
+            status = HttpStatus.OK;
+        }
+
+        return ResponseEntity.status(status).body(response);
     }
 
     @PostMapping("/insert-one/{collectionName}")

@@ -1,0 +1,14 @@
+spring:
+  application:
+    name=MongoDbOAuth
+  data:
+    mongodb:
+      database: user_database
+      host: localhost
+      port: 27017
+      username: admin
+      password: admin
+
+server:
+  port=8080
+
