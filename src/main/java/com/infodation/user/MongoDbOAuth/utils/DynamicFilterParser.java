@@ -19,27 +19,45 @@ public class DynamicFilterParser {
             Object value = entry.getValue();
 
             switch (operator) {
-                case "AND" -> criteriaList.add(new Criteria().andOperator(parseSubFilters((Map<String, Object>) value)));
-                case "OR" -> criteriaList.add(new Criteria().orOperator(parseSubFilters((Map<String, Object>) value)));
-                case "CON" -> criteriaList.add(
+                case "AND" -> {
+                    criteriaList.add(new Criteria().andOperator(parseSubFilters((Map<String, Object>) value)));
+                }
+                case "OR" -> {
+                    criteriaList.add(new Criteria().orOperator(parseSubFilters((Map<String, Object>) value)));
+                }
+                case "CON" -> {
+                    criteriaList.add(
                         Criteria.where(parseSingleKey((Map<String, Object>) value))
                                 .regex(".*" + parseSingleValue((Map<String, Object>) value) + ".*", "i"));
-                case "EQ" -> criteriaList.add(
+                }
+                case "EQ" -> {
+                    criteriaList.add(
                         Criteria.where(parseSingleKey((Map<String, Object>) value))
                                 .is(parseSingleValue((Map<String, Object>) value)));
-                case "GTE" -> criteriaList.add(
+                }
+                case "GTE" -> {
+                    criteriaList.add(
                         Criteria.where(parseSingleKey((Map<String, Object>) value))
                                 .gte(parseSingleValue((Map<String, Object>) value)));
-                case "LTE" -> criteriaList.add(
+                }
+                case "LTE" -> {
+                    criteriaList.add(
                         Criteria.where(parseSingleKey((Map<String, Object>) value))
                                 .lte(parseSingleValue((Map<String, Object>) value)));
-                case "NE" -> criteriaList.add(
+                }
+                case "NE" -> {
+                    criteriaList.add(
                         Criteria.where(parseSingleKey((Map<String, Object>) value))
                                 .ne(parseSingleValue((Map<String, Object>) value)));
-                case "IN" -> criteriaList.add(
+                }
+                case "IN" -> {
+                    criteriaList.add(
                         Criteria.where(parseSingleKey((Map<String, Object>) value))
                                 .in(parseSingleValue((Map<String, Object>) value)));
-                case "NOT" -> criteriaList.add(parseFilter((Map<String, Object>) value).not());
+                }
+                case "NOT" -> {
+                    criteriaList.add(parseFilter((Map<String, Object>) value).not());
+                }
                 case "KEY" -> {
                     if (value instanceof Map) {
                         Map<String, Object> mapValue = (Map<String, Object>) value;

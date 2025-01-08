@@ -26,8 +26,9 @@ public class CollectionServiceImpl {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public MongoCollection<?> createCollection (String collectionName) {
-        return mongoTemplate.createCollection(collectionName);
+    public Document createCollection (String collectionName) {
+        mongoTemplate.createCollection(collectionName);
+        return new Document("message", collectionName + " is created");
     }
 
     public Document insertOne (Document document,  String collectionName) {
